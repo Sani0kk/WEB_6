@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор електричних навантажень</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Калькулятор електричних навантажень методом впорядкованих діаграм</h1>
+        
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('single-ep')">Один ЕП</button>
+            <button class="tab-button" onclick="openTab('group-ep')">Група ЕП</button>
+            <button class="tab-button" onclick="openTab('workshop')">Цех</button>
+        </div>
+        
+        <!-- Розрахунок для одного ЕП -->
+        <div id="single-ep" class="tab-content active">
+            <h2>Розрахунок навантаження для одного електроприймача</h2>
+            
+            <div class="input-group">
+                <label for="ep-name">Найменування ЕП:</label>
+                <input type="text" id="ep-name" value="Шліфувальний верстат">
+            </div>
+            
+            <div class="input-group">
+                <label for="ep-count">Кількість ЕП, шт:</label>
+                <input type="number" id="ep-count" min="1" value="4">
+            </div>
+            
+            <div class="input-group">
+                <label for="ep-power">Номінальна потужність, кВт:</label>
+                <input type="number" id="ep-power" step="0.1" min="0" value="20">
+            </div>
+            
+            <div class="input-group">
+                <label for="ep-efficiency">Коефіцієнт корисної дії (ηн):</label>
+                <input type="number" id="ep-efficiency" step="0.01" min="0" max="1" value="0.92">
+            </div>
+            
+            <div class="input-group">
+                <label for="ep-cosfi">Коефіцієнт потужності (cos φ):</label>
+                <input type="number" id="ep-cosfi" step="0.01" min="0" max="1" value="0.9">
+            </div>
+            
+            <div class="input-group">
+                <label for="ep-voltage">Напруга, кВ:</label>
+                <input type="number" id="ep-voltage" step="0.01" min="0" value="0.38">
+            </div>
+            
+            <div class="input-group">
+                <label for="ep-kv">Коефіцієнт використання (Кв):</label>
+                <input type="number" id="ep-kv" step="0.01" min="0" max="1" value="0.15">
+            </div>
+            
+            <div class="input-group">
+                <label for="ep-tgfi">Коефіцієнт реактивної потужності (tg φ):</label>
+                <input type="number" id="ep-tgfi" step="0.01" min="0" value="1.33">
+            </div>
+            
+            <button onclick="calculateSingleEP()">Розрахувати</button>
+            <div id="single-ep-result" class="result"></div>
+        </div>
+        
+        <!-- Розрахунок для групи ЕП -->
+        <div id="group-ep" class="tab-content">
+            <h2>Розрахунок навантаження для групи електроприймачів (ШР)</h2>
+            
+            <div id="ep-list">
+                <!-- Динамічно додавані ЕП -->
+                <div class="ep-item">
+                    <h3>Електроприймач 1</h3>
+                    <div class="input-group">
+                        <label>Найменування:</label>
+                        <input type="text" class="ep-name" value="Шліфувальний верстат">
+                    </div>
+                    <div class="input-group">
+                        <label>Кількість:</label>
+                        <input type="number" class="ep-count" min="1" value="4">
+                    </div>
+                    <div class="input-group">
+                        <label>Потужність, кВт:</label>
+                        <input type="number" class="ep-power" step="0.1" min="0" value="20">
+                    </div>
+                    <div class="input-group">
+                        <label>Коефіцієнт використання:</label>
+                        <input type="number" class="ep-kv" step="0.01" min="0" max="1" value="0.15">
+                    </div>
+                    <div class="input-group">
+                        <label>tg φ:</label>
+                        <input type="number" class="ep-tgfi" step="0.01" min="0" value="1.33">
+                    </div>
+                </div>
+                
+                <!-- Додаткові ЕП будуть додаватися тут -->
+            </div>
+            
+            <button onclick="addEP()">Додати ЕП</button>
+            <button onclick="calculateGroupEP()">Розрахувати для групи</button>
+            <div id="group-ep-result" class="result"></div>
+        </div>
+        
+        <!-- Розрахунок для цеху -->
+        <div id="workshop" class="tab-content">
+            <h2>Розрахунок навантаження для цеху</h2>
+            
+            <div class="input-group">
+                <label for="workshop-shr-count">Кількість ШР:</label>
+                <input type="number" id="workshop-shr-count" min="1" value="3">
+            </div>
+            
+            <div class="input-group">
+                <label for="workshop-large-ep-count">Кількість великих ЕП:</label>
+                <input type="number" id="workshop-large-ep-count" min="0" value="2">
+            </div>
+            
+            <button onclick="calculateWorkshop()">Розрахувати для цеху</button>
+            <div id="workshop-result" class="result"></div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
